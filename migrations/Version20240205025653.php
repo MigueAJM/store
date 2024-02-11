@@ -62,6 +62,11 @@ final class Version20240205025653 extends AbstractMigration
         $this->addSql('ALTER TABLE account ADD CONSTRAINT FK_7D3656A419EB6921 FOREIGN KEY (client_id) REFERENCES client (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE product ADD CONSTRAINT FK_D34A04AD12469DE2 FOREIGN KEY (category_id) REFERENCES category (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE "user" ADD CONSTRAINT FK_8D93D649D60322AC FOREIGN KEY (role_id) REFERENCES role (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql("INSERT INTO \"role\" VALUES({$_ENV['ROLE_ADMIN_ID']}, 'admin'),(2, 'user')");
+        $password = $_ENV['SALT'].$_ENV['PASSWORD'];
+        $passwordEncript = password_hash($password, PASSWORD_BCRYPT);
+        $time = time();
+        $this->addSql("INSERT INTO \"user\" VALUES({$time}, {$_ENV['ROLE_ADMIN_ID']}, 'admin', 'admin', 'admin', '{$_ENV['SUPER_ADMIN']}', '{$passwordEncript}', NOW(), NOW())");
     }
 
     public function down(Schema $schema): void
