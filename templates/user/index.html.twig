@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{title}}{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+{% block body %}
+    <h3>Sign In</h3>
+    {{form(form)}}
+{% endblock %}
