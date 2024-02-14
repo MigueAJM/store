@@ -64,7 +64,7 @@ final class Version20240205025653 extends AbstractMigration
         $this->addSql('ALTER TABLE "user" ADD CONSTRAINT FK_8D93D649D60322AC FOREIGN KEY (role_id) REFERENCES role (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql("INSERT INTO \"role\" VALUES({$_ENV['ROLE_ADMIN_ID']}, 'admin'),(2, 'user')");
         $password = $_ENV['SALT'].$_ENV['PASSWORD'];
-        $passwordEncript = password_hash($password, PASSWORD_BCRYPT);
+        $passwordEncript = hash($_ENV['ALG'], $password);
         $time = time();
         $this->addSql("INSERT INTO \"user\" VALUES({$time}, {$_ENV['ROLE_ADMIN_ID']}, 'admin', 'admin', 'admin', '{$_ENV['SUPER_ADMIN']}', '{$passwordEncript}', NOW(), NOW())");
     }

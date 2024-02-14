@@ -73,6 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: "Enter at least one special character"
     )]
     private ?string $password = null;
+    private ?string $confirmPassword = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -83,8 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Role $role = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    private ?array $roles = [];
 
     public function getId(): ?int
     {
@@ -144,6 +144,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+        return $this;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    public function setConfirmPassword(string $confirmPassword): static
+    {
+        $this->confirmPassword = $confirmPassword;
         return $this;
     }
 
@@ -211,7 +222,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'nickname' => $this->nickname,
+            'email' => $this->email
+        ];
     }
 }

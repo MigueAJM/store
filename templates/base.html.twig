@@ -7,8 +7,19 @@
         {% block stylesheets %}
         {% endblock %}
 
+        <script src="{{asset('resources/js/Exception.js')}}"></script>
+        <script src="{{asset('resources/js/Fetch.js')}}"></script>
+        <script src="{{asset('resources/js/main.js')}}"></script>
+        <script>
+            const _fetch = new Fetch();
+        </script>
         {% block javascripts %}
-{% block importmap %}{{ importmap('app') }}{% endblock %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {% if formId is defined %}
+                <script>
+                    const _formId = {{formId|json_encode|raw}};
+                </script>
+            {% endif %}
         {% endblock %}
     </head>
     <body>
