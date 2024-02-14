@@ -18,6 +18,7 @@ class Exception extends Error
 			return;
 		}
 		const now = new Date();
+		if(urlError === undefined) return;
 		_fetch.post(urlError, {
 			body: JSON.stringify({
 				user: _user.email ?? 'guest',
