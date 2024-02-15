@@ -23,12 +23,12 @@ class AbstractEntity implements Entity
 	public static function fromArray(array $entity): static
 	{
 		$newEntity = new static();
-        foreach ($entity as $k => $v) {
-            $method = "set".ucfirst($k);
-            if(method_exists($newEntity::class, $method)){
-                $newEntity->$method($v);
-            }
-        }
-        return $newEntity;
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+					$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
 	}
 }
