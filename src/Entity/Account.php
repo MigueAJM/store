@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-class Account
+class Account extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

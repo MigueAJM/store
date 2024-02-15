@@ -24,3 +24,10 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 .env
+.DS_store
+src/.DS_store
+src/*/.DS_store
+public/*/.DS_store
+config/*/.DS_store
+public/.DS_store
+consig/.DS_store

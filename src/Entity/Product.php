@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+class Product extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -59,7 +59,7 @@ class Product
 
     public function setName(string $name): static
     {
-        $this->name = $name;
+        $this->name = trim($name);
         return $this;
     }
 
@@ -81,7 +81,7 @@ class Product
 
     public function setDescription(string $description): static
     {
-        $this->description = $description;
+        $this->description = trim($description);
         return $this;
     }
 

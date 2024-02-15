@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -84,7 +82,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Role $role = null;
 
-    private ?array $roles = [];
+    #[ORM\Column]
+    private ?bool $active = null;
+
+    public function __construct()
+    {
+        parent::__construct(['password', 'confirmPassword', 'role']);
+    }
 
     public function getId(): ?int
     {
@@ -98,7 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setFirstname(string $firstname): static
     {
-        $this->firstname = $firstname;
+        $this->firstname = trim($firstname);
 
         return $this;
     }
@@ -110,7 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setLastname(string $lastname): static
     {
-        $this->lastname = $lastname;
+        $this->lastname = trim($lastname);
         return $this;
     }
 
@@ -121,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setNickname(string $nickname): static
     {
-        $this->nickname = $nickname;
+        $this->nickname = trim($nickname);
         return $this;
     }
 
@@ -132,7 +136,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmail(string $email): static
     {
-        $this->email = $email;
+        $this->email = trim($email);
         return $this;
     }
 
@@ -143,7 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): static
     {
-        $this->password = $password;
+        $this->password = trim($password);
         return $this;
     }
 
@@ -154,7 +158,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setConfirmPassword(string $confirmPassword): static
     {
-        $this->confirmPassword = $confirmPassword;
+        $this->confirmPassword = trim($confirmPassword);
         return $this;
     }
 
@@ -191,45 +195,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserIdentifier(): string
+    public function getActive(): bool
     {
-        return (string) $this->email;
+        return $this->active;
     }
 
-    public function getSalt(): ?string
+    public function setActive(bool $active): static
     {
-        return null;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
+        $this->active = $active;
         return $this;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'nickname' => $this->nickname,
-            'email' => $this->email
-        ];
     }
 }

@@ -3,12 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\RolRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RolRepository::class)]
-class Role
+class Role extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
