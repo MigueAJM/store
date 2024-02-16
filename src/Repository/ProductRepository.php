@@ -27,7 +27,7 @@ class ProductRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Product $entity)
+    public function update(Product $entity)
     {
         $this->persist($entity);
         $this->flush();

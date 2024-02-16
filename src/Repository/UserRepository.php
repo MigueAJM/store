@@ -42,7 +42,7 @@ class UserRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(User $entity)
+    public function update(User $entity)
     {
         $this->persist($entity);
         $this->flush();

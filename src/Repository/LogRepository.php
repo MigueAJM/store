@@ -27,7 +27,7 @@ class LogRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Log $entity)
+    public function update(Log $entity)
     {
         $this->persist($entity);
         $this->flush();

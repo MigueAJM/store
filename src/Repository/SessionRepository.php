@@ -27,7 +27,7 @@ class SessionRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Session $entity)
+    public function update(Session $entity)
     {
         $this->persist($entity);
         $this->flush();

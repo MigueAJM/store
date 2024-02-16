@@ -27,7 +27,7 @@ class CategoryRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Category $entity)
+    public function update(Category $entity)
     {
         $this->persist($entity);
         $this->flush();

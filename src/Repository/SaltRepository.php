@@ -27,7 +27,7 @@ class SaltRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Salt $entity)
+    public function update(Salt $entity)
     {
         $this->persist($entity);
         $this->flush();

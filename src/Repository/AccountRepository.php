@@ -27,7 +27,7 @@ class AccountRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Account $entity)
+    public function update(Account $entity)
     {
         $this->persist($entity);
         $this->flush();

@@ -27,7 +27,7 @@ class ClientRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Client $entity)
+    public function update(Client $entity)
     {
         $this->persist($entity);
         $this->flush();

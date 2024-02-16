@@ -27,7 +27,7 @@ class RolRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Role $entity)
+    public function update(Role $entity)
     {
         $this->persist($entity);
         $this->flush();

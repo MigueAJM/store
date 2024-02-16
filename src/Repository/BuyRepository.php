@@ -27,7 +27,7 @@ class BuyRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Buy $entity)
+    public function update(Buy $entity)
     {
         $this->persist($entity);
         $this->flush();

@@ -27,7 +27,7 @@ class ErrorRepository extends ServiceEntityRepository
         $this->flush();
     }
 
-    public function updae(Error $entity)
+    public function update(Error $entity)
     {
         $this->persist($entity);
         $this->flush();
