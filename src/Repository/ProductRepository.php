@@ -20,4 +20,22 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
+
+    public function create(Product $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function updae(Product $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function delete(Product $entity)
+    {
+        $this->remove($entity);
+        $this->flush();
+    }
 }

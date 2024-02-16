@@ -20,4 +20,22 @@ class AccountRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Account::class);
     }
+
+    public function create(Account $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function updae(Account $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function delete(Account $entity)
+    {
+        $this->remove($entity);
+        $this->flush();
+    }
 }

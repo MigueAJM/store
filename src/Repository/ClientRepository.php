@@ -20,4 +20,22 @@ class ClientRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Client::class);
     }
+
+    public function create(Client $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function updae(Client $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function delete(Client $entity)
+    {
+        $this->remove($entity);
+        $this->flush();
+    }
 }

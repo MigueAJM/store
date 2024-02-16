@@ -20,4 +20,22 @@ class SaltRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Salt::class);
     }
+
+    public function create(Salt $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function updae(Salt $entity)
+    {
+        $this->persist($entity);
+        $this->flush();
+    }
+
+    public function delete(Salt $entity)
+    {
+        $this->remove($entity);
+        $this->flush();
+    }
 }
