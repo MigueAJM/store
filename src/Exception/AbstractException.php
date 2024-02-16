@@ -20,8 +20,10 @@ class AbstractException extends Exception
 	{
 		parent::__construct($message, $httpCode);
 		$this->errorCode = $errorCode;
-		$this->saveError($entityManager->getRepository(EntityError::class));
-		$this->requestStack = new RequestStack();
+		if($httpCode >= 500) {
+			$this->requestStack = new RequestStack();
+			$this->saveError($entityManager->getRepository(EntityError::class));
+		}
 	}
 
 	public function getErrorCode()
