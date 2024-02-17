@@ -11,7 +11,7 @@ class ExceptionListener
         $exception = $event->getThrowable();
 				$payload = [
 					'error' => [
-						'exception' => get_class($exception),
+						'exception' => end(explode("\\", get_class($exception))),
 						'httpCode' => $exception->getCode(),
 						'message' => $exception->getMessage()
 					]
