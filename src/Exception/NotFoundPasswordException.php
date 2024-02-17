@@ -3,7 +3,6 @@
 namespace App\Exception;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 final class NotFoundPasswordException extends AbstractException
