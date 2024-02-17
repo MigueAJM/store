@@ -10,6 +10,8 @@ final class NotFoundSaltException extends AbstractException
 {
 	public function __construct(EntityManagerInterface $entityManager)
 	{
-		parent::__construct($entityManager, Response::$statusTexts[404], Response::HTTP_NOT_FOUND, ErrorCode::NOT_FOUND_SALT);
+		$code = Response::HTTP_NOT_FOUND;
+		$message = Response::$statusTexts[$code]."(Salt)";
+		parent::__construct($entityManager, $message, $code, ErrorCode::NOT_FOUND_SALT);
 	}
 }
