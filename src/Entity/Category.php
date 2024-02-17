@@ -6,7 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class Category extends AbstractEntity
+class Category 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,4 +31,22 @@ class Category extends AbstractEntity
         $this->name = trim($name);
         return $this;
     }
+
+    public function toArray(): array
+	{
+		$entity = get_object_vars($this);
+		return $entity;
+	}
+
+	public static function fromArray(array $entity): static
+	{
+		$newEntity = new static();
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+					$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
+	}
 }

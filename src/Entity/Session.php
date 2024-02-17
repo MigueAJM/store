@@ -6,7 +6,7 @@ use App\Repository\SessionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SessionRepository::class)]
-class Session extends AbstractEntity
+class Session 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -103,4 +103,22 @@ class Session extends AbstractEntity
         $this->active = $active;
         return $this;
     }
+
+    public function toArray(): array
+	{
+		$entity = get_object_vars($this);
+		return $entity;
+	}
+
+	public static function fromArray(array $entity): static
+	{
+		$newEntity = new static();
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+					$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
+	}
 }

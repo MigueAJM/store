@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-final class UserCredential extends AbstractEntity
+use App\Interface\Entity;
+
+final class UserCredential
 {
 	private ?string $email = null;
 	private ?string $password = null;
@@ -25,7 +27,7 @@ final class UserCredential extends AbstractEntity
 
 	public function setPassword(string $password): static
 	{
-		$this->email = trim($password);
+		$this->password = trim($password);
 		return $this;
 	}
 
@@ -36,7 +38,25 @@ final class UserCredential extends AbstractEntity
 
 	public function setActive(bool $active): static
 	{
-		$this->active =true;
+		$this->active = $active;
 		return $this;
+	}
+
+	public function toArray(): array
+	{
+		$entity = get_object_vars($this);
+		return $entity;
+	}
+
+	public static function fromArray(array $entity): static
+	{
+		$newEntity = new static();
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+				$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
 	}
 }

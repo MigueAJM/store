@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product extends AbstractEntity
+class Product 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -139,4 +139,22 @@ class Product extends AbstractEntity
         $this->image = $code;
         return $this;
     }
+
+    public function toArray(): array
+	{
+		$entity = get_object_vars($this);
+		return $entity;
+	}
+
+	public static function fromArray(array $entity): static
+	{
+		$newEntity = new static();
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+					$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
+	}
 }

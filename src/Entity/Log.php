@@ -47,4 +47,22 @@ class Log
 
         return $this;
     }
+
+    public function toArray(): array
+	{
+		$entity = get_object_vars($this);
+		return $entity;
+	}
+
+	public static function fromArray(array $entity): static
+	{
+		$newEntity = new static();
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+					$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
+	}
 }

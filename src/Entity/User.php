@@ -8,7 +8,7 @@ use App\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User extends AbstractEntity
+class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -84,11 +84,6 @@ class User extends AbstractEntity
 
     #[ORM\Column]
     private ?bool $active = null;
-
-    public function __construct()
-    {
-        parent::__construct(['password', 'confirmPassword', 'role']);
-    }
 
     public function getId(): ?int
     {
@@ -205,4 +200,25 @@ class User extends AbstractEntity
         $this->active = $active;
         return $this;
     }
+
+    public function toArray(): array
+	{
+		$entity = get_object_vars($this);
+		foreach (['password', 'confirmPassword', 'role'] as $k) {
+			unset($entity[$k]);
+		}
+		return $entity;
+	}
+
+	public static function fromArray(array $entity): static
+	{
+		$newEntity = new static();
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+					$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
+	}
 }

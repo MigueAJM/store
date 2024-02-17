@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-class Account extends AbstractEntity
+class Account 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -102,4 +102,22 @@ class Account extends AbstractEntity
         $this->total = $total;
         return $this;
     }
+
+    public function toArray(): array
+	{
+		$entity = get_object_vars($this);
+		return $entity;
+	}
+
+	public static function fromArray(array $entity): static
+	{
+		$newEntity = new static();
+		foreach ($entity as $k => $v) {
+			$method = "set".ucfirst($k);
+			if(method_exists($newEntity::class, $method)){
+				$newEntity->$method($v);
+			}
+		}
+		return $newEntity;
+	}
 }
