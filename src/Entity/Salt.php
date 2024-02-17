@@ -13,7 +13,7 @@ class Salt extends AbstractEntity
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 5)]
+    #[ORM\Column(length: 8)]
     private ?string $salt = null;
 
     #[ORM\Column]
