@@ -9,9 +9,8 @@ use App\Entity\UserCredential;
 use App\Exception\NotFoundEmailException;
 use App\Exception\NotFoundPasswordException;
 use App\Exception\NotFoundSaltException;
-use App\Repository\SaltRepository;
 use App\Repository\SessionRepository;
-use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/', name: 'security')]
+#[Route('', name: 'security')]
 class SecurityController extends Controller
 {
     /**
@@ -30,21 +29,26 @@ class SecurityController extends Controller
     public function signIn(Request $request, EntityManagerInterface $entityManager): Response
     {
         $userCredential = UserCredential::fromArray(json_decode($request->getContent(), true));
+        $userCredential->setActive(true);
         $userRepository = $entityManager->getRepository(User::class);
-        $searchUser = $userRepository->findOneBy(['email' => $userCredential->getEmail()]);
+        $criteria = $userCredential->toArray();
+        unset($criteria['password']);
+        $searchUser = $userRepository->findOneBy($criteria);
         if(!$searchUser) throw new NotFoundEmailException($entityManager);
         $encrytPassword = $this->encryptPassword($entityManager, $userCredential->getPassword(), $searchUser);
         $userCredential->setPassword($encrytPassword);
-        $searchUser = $userRepository->findOneBy($userCredential->toArray());
+        $criteria = $userCredential->toArray();
+        $searchUser = $userRepository->findOneBy($criteria);
         if(!$searchUser) throw new NotFoundPasswordException($entityManager);
-        $sessionRepository = $entityManager->getRepository(Session::class);
-        $session = $this->createSession($sessionRepository, $searchUser);
-        $jwt = $this->generateJWT(['key' => $session->getUuid()]);
+        $session = $this->createSession($entityManager, $searchUser);
+        $payload = $searchUser->toArray();
+        $payload["key"] =$session->getUuid();
+        $jwt = $this->generateJWT($payload);
         return $this->json(['authorization' => $jwt]);
     }
 
     #[Route('/sign-out', name: 'sign_out', methods: ['GET'])]
-    public function signOut(Request $request, SessionRepository $sessionRepository): Response
+    public function signOut(Request $request, EntityManagerInterface $entityManager): Response
     {
         $jwt = $request->query->get('authorization');
         if(!$jwt){
@@ -53,10 +57,11 @@ class SecurityController extends Controller
         $payload = $this->decodeJWT($jwt);
         $uuidSession = $payload->data->key ?? null;
         if(!$uuidSession) throw new UnauthorizedHttpException('', "Unauthorized (invalid authorization token.)");
-        $searchSession = $sessionRepository->findOneBy(['uuid' => $uuidSession]);
+        $searchSession = $entityManager->getRepository(Session::class)->findOneBy(['uuid' => $uuidSession]);
         if(!$searchSession) throw new UnauthorizedHttpException('', "Unauthorized (invalid authorization token.)");
         $searchSession->setActive(false);
-        $sessionRepository->update($searchSession);
+        $entityManager->persist($searchSession);
+        $entityManager->flush();
         return $this->json([]);
     }
 
@@ -81,16 +86,27 @@ class SecurityController extends Controller
         return hash($_ENV['ALG'], $fullPassword);
     }
 
-    private function createSession(SessionRepository $sessionRepository, User $user): Session
+    private function createSession(EntityManagerInterface $entityManager, User $user): Session
     {
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = $this->getUniqueUuid($entityManager->getRepository(Session::class));
         $expired = time() + (4 * 3600);
         $session = new Session();
-        $session->setUseri($user->getId());
+        $session->setUseri($user);
         $session->setUuid($uuid);
         $session->setActive(true);
         $session->setExpired($expired);
-        $sessionRepository->create($session);
+        $session->setCreatedAt(new DateTimeImmutable());
+        $session->setUpdatedAt(new DateTimeImmutable());
+        $entityManager->persist($session);
+        $entityManager->flush();
         return $session;
+    }
+
+    private function getUniqueUuid(SessionRepository $sessionRepository): string
+    {
+        $uuid = Uuid::uuid4()->toString();
+        $searchSession = $sessionRepository->findOneBy(compact("unique"));
+        if(!$searchSession) return $uuid;
+        return $this->getUniqueUuid($sessionRepository);
     }
 }
