@@ -6,7 +6,9 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Controller extends AbstractController
 {
@@ -29,12 +31,12 @@ class Controller extends AbstractController
 		}
 
 		/**
-		 * @throws BadRequestHttpException undefined **authorization token**
+		 * @throws UnauthorizedHttpException undefined **authorization token**
 		 */
 		public function getAuthorizationToken(Request $request): string
 		{
 			$authorization = $request->headers->get('Authorization');
-			if(!$authorization) throw new BadRequestHttpException("Bad request(undefined authorization token).", null, 400);
+			if(!$authorization) throw new UnauthorizedHttpException('', "Undefined authorization token.", null, Response::HTTP_UNAUTHORIZED);
 			return substr($authorization, 5);
 		}
 }

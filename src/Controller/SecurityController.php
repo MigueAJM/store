@@ -47,13 +47,15 @@ class SecurityController extends Controller
         return $this->json(['authorization' => $jwt]);
     }
 
-    #[Route('/sign-out', name: 'sign_out', methods: ['GET'])]
+    #[Route('/sign-out', name: 'sign_out', methods: ['GET', 'HEAD'])]
     public function signOut(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $jwt = $request->query->get('authorization');
-        if(!$jwt){
+        $jwt = null;
+        if($request->getMethod() === Request::METHOD_GET)
+            $jwt = $request->query->get('authorization');
+        if($request->getMethod() === Request::METHOD_HEAD)
             $jwt = $this->getAuthorizationToken($request);
-        }
+        if(!$jwt) throw new UnauthorizedHttpException('', "Undefined authorization token.", null, Response::HTTP_UNAUTHORIZED);
         $payload = $this->decodeJWT($jwt);
         $uuidSession = $payload->data->key ?? null;
         if(!$uuidSession) throw new UnauthorizedHttpException('', "Unauthorized (invalid authorization token.)");
