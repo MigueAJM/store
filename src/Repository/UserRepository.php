@@ -35,22 +35,4 @@ class UserRepository extends ServiceEntityRepository
         $this->flush($activeSession);
         return true;
     }
-
-    public function create(User $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function update(User $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function delete(User $entity)
-    {
-        $this->remove($entity);
-        $this->flush();
-    }
 }

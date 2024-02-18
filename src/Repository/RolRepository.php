@@ -20,22 +20,4 @@ class RolRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Role::class);
     }
-
-    public function create(Role $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function update(Role $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function delete(Role $entity)
-    {
-        $this->remove($entity);
-        $this->flush();
-    }
 }

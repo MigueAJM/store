@@ -20,22 +20,4 @@ class BuyRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Buy::class);
     }
-
-    public function create(Buy $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function update(Buy $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function delete(Buy $entity)
-    {
-        $this->remove($entity);
-        $this->flush();
-    }
 }

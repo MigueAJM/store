@@ -20,22 +20,4 @@ class ErrorRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Error::class);
     }
-
-    public function create(Error $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function update(Error $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function delete(Error $entity)
-    {
-        $this->remove($entity);
-        $this->flush();
-    }
 }

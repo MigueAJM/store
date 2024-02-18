@@ -20,22 +20,4 @@ class SessionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Session::class);
     }
-
-    public function create(Session $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function update(Session $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function delete(Session $entity)
-    {
-        $this->remove($entity);
-        $this->flush();
-    }
 }

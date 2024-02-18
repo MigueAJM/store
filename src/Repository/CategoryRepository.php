@@ -20,22 +20,4 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
-
-    public function create(Category $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function update(Category $entity)
-    {
-        $this->persist($entity);
-        $this->flush();
-    }
-
-    public function delete(Category $entity)
-    {
-        $this->remove($entity);
-        $this->flush();
-    }
 }
