@@ -76,7 +76,7 @@ class SecurityController extends Controller
         ?User $user = null
     ): string
     {
-        $salt = bin2hex(random_bytes(4));
+        $salt = "";
         if($user){
             $saltRepository = $entityManager->getRepository(Salt::class);
             $criteria = ['useri' => $user->getId()];
@@ -110,5 +110,10 @@ class SecurityController extends Controller
         $searchSession = $sessionRepository->findOneBy(compact("unique"));
         if(!$searchSession) return $uuid;
         return $this->getUniqueUuid($sessionRepository);
+    }
+
+    static function genereteSalt(): string
+    {
+        return bin2hex(random_bytes(4));
     }
 }
