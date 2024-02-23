@@ -17,8 +17,6 @@ class UserController extends Controller
     #[Route('/register', name: '_register', methods:['POST', 'PUT'])]
     public function register(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
-        $jwt = $this->getAuthorizationToken($request);
-        $payload = $this->decodeJWT($jwt);
         $user = User::fromArray(json_decode($request->getContent(), true));
         $errors = $validator->validate($user);
         if(count($errors)){
