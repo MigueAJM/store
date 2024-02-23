@@ -143,6 +143,8 @@ class Product
     public function toArray(): array
 	{
 		$entity = get_object_vars($this);
+        $entity['category'] = $this->category->getName();
+        $entity['categoryId'] = $this->category->getId();
 		return $entity;
 	}
 
@@ -152,9 +154,19 @@ class Product
 		foreach ($entity as $k => $v) {
 			$method = "set".ucfirst($k);
 			if(method_exists($newEntity::class, $method)){
-					$newEntity->$method($v);
+				$newEntity->$method($v);
 			}
 		}
 		return $newEntity;
 	}
+
+    static function getProperties()
+    {
+        $properties = [];
+        $privateProperties = ['priceOld', 'stock', 'image'];
+        foreach (get_object_vars(new static()) as $k => $v) {
+            if(in_array($k, $privateProperties)) $properties[] = $k;
+        }
+        return $properties;
+    }
 }
