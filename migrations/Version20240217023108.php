@@ -20,7 +20,7 @@ final class Version20240217023108 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SEQUENCE account_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        /* $this->addSql('CREATE SEQUENCE account_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE buy_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE client_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
@@ -68,7 +68,7 @@ final class Version20240217023108 extends AbstractMigration
         $encrypPassword = hash($_ENV['ALG'], $password);
         $this->addSql("INSERT INTO role VALUES({$_ENV['ROLE_ADMIN_ID']}, 'ROLE_ADMIN'), ({$roleId}, 'ROLE_USER') ");
         $this->addSql("INSERT INTO \"user\" VALUES({$userId}, {$_ENV['ROLE_ADMIN_ID']}, 'super', 'admin', 'superAdmin', '{$_ENV['SUPER_ADMIN']}', '{$encrypPassword}', NOW(), NOW(), true)");
-        $this->addSql("INSERT INTO salt VALUES(1, '{$_ENV['SALT']}', {$userId})");
+        $this->addSql("INSERT INTO salt VALUES(1, '{$_ENV['SALT']}', {$userId})"); */
     }
 
     public function down(Schema $schema): void

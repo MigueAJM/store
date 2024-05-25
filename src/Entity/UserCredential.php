@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Interface\Entity;
-
 final class UserCredential
 {
 	private ?string $email = null;

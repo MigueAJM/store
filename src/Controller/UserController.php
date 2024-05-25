@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/user', name: 'api_user')]
 class UserController extends Controller
 {
-    #[Route('/register', name: '_register', methods:['POST', 'PUT'])]
+    #[Route('/register', name: '_register', methods:['POST'])]
     public function register(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         $user = User::fromArray(json_decode($request->getContent(), true));
@@ -45,5 +45,14 @@ class UserController extends Controller
         $user->setPassword($password);
         $entityManager->flush();
         return $this->json([], Response::HTTP_CREATED);
+    }
+
+    #[Route('/unactive/{id<\d+>}', name: '_unactive', methods: ['PUT'])]
+    public function unactive(User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setActive(false);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return $this->json([]);
     }
 }

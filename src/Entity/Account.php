@@ -106,6 +106,7 @@ class Account
     public function toArray(): array
 	{
 		$entity = get_object_vars($this);
+        $entity['client'] = $this->client->toArray();
 		return $entity;
 	}
 

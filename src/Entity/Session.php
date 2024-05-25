@@ -107,6 +107,7 @@ class Session
     public function toArray(): array
 	{
 		$entity = get_object_vars($this);
+        $entity['user'] = $this->useri->toArray();
 		return $entity;
 	}
 
@@ -116,7 +117,7 @@ class Session
 		foreach ($entity as $k => $v) {
 			$method = "set".ucfirst($k);
 			if(method_exists($newEntity::class, $method)){
-					$newEntity->$method($v);
+				$newEntity->$method($v);
 			}
 		}
 		return $newEntity;

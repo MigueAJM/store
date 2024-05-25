@@ -129,7 +129,7 @@ class Buy
 		foreach ($entity as $k => $v) {
 			$method = "set".ucfirst($k);
 			if(method_exists($newEntity::class, $method)){
-					$newEntity->$method($v);
+				$newEntity->$method($v);
 			}
 		}
 		return $newEntity;

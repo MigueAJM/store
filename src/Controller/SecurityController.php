@@ -29,7 +29,6 @@ class SecurityController extends Controller
     public function signIn(Request $request, EntityManagerInterface $entityManager): Response
     {
         $userCredential = UserCredential::fromArray(json_decode($request->getContent(), true));
-        $userCredential->setActive(true);
         $userRepository = $entityManager->getRepository(User::class);
         $criteria = $userCredential->toArray();
         unset($criteria['password']);
